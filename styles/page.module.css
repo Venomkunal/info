@@ -1,0 +1,89 @@
+/* Background */
+.container {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #050816;
+  color: white;
+  position: relative;
+}
+
+/* Glow */
+.container::after {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, rgba(0,255,255,0.15), transparent);
+  animation: glow 6s infinite alternate;
+  z-index: -1;
+}
+
+@keyframes glow {
+  from { transform: translate(0,0); }
+  to { transform: translate(40px, 40px); }
+}
+
+/* Slides wrapper */
+.slider {
+  display: flex;
+}
+
+/* Grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+/* Card */
+.card {
+  padding: 16px;
+  border-radius: 16px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Neon */
+.neon {
+  color: #22d3ee;
+}
+
+/* Responsive text */
+.title {
+  font-size: 22px;
+}
+
+@media (min-width: 768px) {
+  .title {
+    font-size: 36px;
+  }
+}
+
+/* Progress dots */
+.progress {
+  position: fixed;
+  left: 10px;
+  top: 50%;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: gray;
+}
+
+.active {
+  background: #22d3ee;
+}
+
+/* Counter */
+.counter {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  color: gray;
+}
