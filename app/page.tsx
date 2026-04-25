@@ -1,115 +1,114 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
-import Slide from "@/components/Slide";
-import NavControls from "@/components/NavControls";
-import SEOChart from "@/components/SEOChart";
 import styles from "../styles/page.module.css";
 
 export default function Home() {
   const [index, setIndex] = useState(0);
-  const touchStart = useRef<number | null>(null);
 
-  const playSound = () => {
-    const audio = new Audio("/click.mp3");
-    audio.volume = 0.2;
-    audio.play();
-  };
-
-  const next = () => {
-    playSound();
-    setIndex((i) => Math.min(i + 1, slides.length - 1));
-  };
-
-  const prev = () => {
-    playSound();
-    setIndex((i) => Math.max(i - 1, 0));
-  };
-
-  useEffect(() => {
-    const handle = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft") prev();
-    };
-    window.addEventListener("keydown", handle);
-    return () => window.removeEventListener("keydown", handle);
-  }, []);
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStart.current = e.touches[0].clientX;
-  };
-
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStart.current === null) return;
-    const diff = touchStart.current - e.changedTouches[0].clientX;
-
-    if (diff > 50) next();
-    if (diff < -50) prev();
-  };
+  const next = () => setIndex((i) => Math.min(i + 1, slides.length - 1));
+  const prev = () => setIndex((i) => Math.max(i - 1, 0));
 
   const slides = [
 
-    <Slide key="1">
-      <img src="/logo.jpg" width={100} />
-      <h1 className={styles.neon + " " + styles.title}>
-        Shineweb Tech Creations
-      </h1>
-      <p>Complete IT • SEO • Software • Hardware</p>
-    </Slide>,
+    // HERO
+    <section className={styles.slide} key="hero">
+      <div className={styles.hero}>
+        <img src="/logo.jpg" className={styles.logo} />
 
-    <Slide key="2">
-      <h2 className={styles.neon}>Services</h2>
-      <div className={styles.grid}>
-        {["Web Dev","UI Design","SEO","Profile","Upgrade"].map(s => (
-          <div className={styles.card}>{s}</div>
-        ))}
+        <h1 className={styles.title}>
+          Shineweb Tech Creations
+        </h1>
+
+        <p className={styles.subtitle}>
+          Complete IT • SEO • Software • Hardware Solutions
+        </p>
+
+        <a
+          href="https://www.shinewebtechcretions.online"
+          target="_blank"
+          className={styles.btn}
+        >
+          Visit Website
+        </a>
       </div>
-    </Slide>,
+    </section>,
 
-    <Slide key="3">
-      <h2 className={styles.neon}>Products</h2>
-      <div className={styles.grid}>
-        {["Parts","Laptops","Networking","Custom PC"].map(s => (
-          <div className={styles.card}>{s}</div>
-        ))}
+    // SERVICES
+    <section className={styles.slide} key="services">
+      <div className={styles.wrapper}>
+        <h2 className={styles.title}>Services</h2>
+
+        <div className={styles.grid}>
+          {[
+            "Web Development",
+            "UI/UX Design",
+            "SEO (Local + Global)",
+            "Business Profile Setup",
+            "Website Upgrade",
+          ].map((item, i) => (
+            <div key={i} className={styles.card}>{item}</div>
+          ))}
+        </div>
       </div>
-    </Slide>,
+    </section>,
 
-    <Slide key="4">
-      <h2 className={styles.neon}>SEO Growth</h2>
-      <SEOChart />
-    </Slide>,
+    // PRODUCTS
+    <section className={styles.slide} key="products">
+      <div className={styles.wrapper}>
+        <h2 className={styles.title}>Products</h2>
 
-    <Slide key="5">
-      <h2 className={styles.neon}>Pricing</h2>
-      <div className={styles.grid}>
-        {["₹10K","₹25K","₹50K+"].map(p => (
-          <div className={styles.card}>{p}</div>
-        ))}
+        <div className={styles.grid}>
+          {[
+            "Computer Parts",
+            "Laptops & Desktops",
+            "Networking Devices",
+            "Custom PC Builds",
+          ].map((item, i) => (
+            <div key={i} className={styles.card}>{item}</div>
+          ))}
+        </div>
       </div>
-    </Slide>,
+    </section>,
 
-    <Slide key="6">
-      <h2 className={styles.neon}>Website</h2>
-      <a href="https://www.shinewebtechcretions.online" target="_blank">
-        Visit Website
-      </a>
-    </Slide>,
+    // PRICING
+    <section className={styles.slide} key="pricing">
+      <div className={styles.wrapper}>
+        <h2 className={styles.title}>Pricing</h2>
 
-    <Slide key="7">
-      <h2 className={styles.neon}>Contact</h2>
-      <p>support@shinewebtechcretions.online</p>
-      <p>936596331</p>
-    </Slide>,
+        <div className={styles.grid}>
+          {[
+            "Starter ₹10K",
+            "Growth ₹25K",
+            "Pro ₹50K+",
+          ].map((item, i) => (
+            <div key={i} className={styles.cardHighlight}>{item}</div>
+          ))}
+        </div>
+      </div>
+    </section>,
+
+    // CONTACT
+    <section className={styles.slide} key="contact">
+      <div className={styles.wrapper}>
+        <h2 className={styles.title}>Contact</h2>
+
+        <p>support@shinewebtechcretions.online</p>
+        <p>+91 9365963310</p>
+
+        <a
+          href="https://wa.me/917099093224"
+          className={styles.btn}
+        >
+          WhatsApp Now
+        </a>
+      </div>
+    </section>,
   ];
 
   return (
-    <div
-      className={styles.container}
-      onTouchStart={onTouchStart}
-      onTouchEnd={onTouchEnd}
-    >
+    <div className={styles.container}>
       <motion.div
         className={styles.slider}
         animate={{ x: `-${index * 100}vw` }}
@@ -118,19 +117,18 @@ export default function Home() {
         {slides}
       </motion.div>
 
-      <NavControls next={next} prev={prev} />
+      <div className={styles.nav}>
+        <button onClick={prev}>←</button>
+        <button onClick={next}>→</button>
+      </div>
 
-      <div className={styles.progress}>
+      <div className={styles.dots}>
         {slides.map((_, i) => (
           <div
             key={i}
             className={`${styles.dot} ${i === index ? styles.active : ""}`}
           />
         ))}
-      </div>
-
-      <div className={styles.counter}>
-        {index + 1}/{slides.length}
       </div>
     </div>
   );

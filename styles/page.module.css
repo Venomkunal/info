@@ -1,89 +1,152 @@
-/* Background */
 .container {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-  background: #050816;
+  background: radial-gradient(circle at top, #0a0f2c, #020617);
   color: white;
-  position: relative;
+  font-family: system-ui;
 }
 
-/* Glow */
-.container::after {
-  content: "";
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, rgba(0,255,255,0.15), transparent);
-  animation: glow 6s infinite alternate;
-  z-index: -1;
-}
-
-@keyframes glow {
-  from { transform: translate(0,0); }
-  to { transform: translate(40px, 40px); }
-}
-
-/* Slides wrapper */
+/* slider */
 .slider {
   display: flex;
+  width: 100%;
+  height: 100vh;
 }
 
-/* Grid */
+/* IMPORTANT FIX */
+.slider {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+}
+
+/* IMPORTANT FIX */
+.slide {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+  flex-shrink: 0;
+}
+
+.wrapper {
+  max-width: 900px;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* hero */
+.hero {
+  text-align: center;
+}
+
+.logo {
+  width: 90px;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 30px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #22d3ee, #60a5fa);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.subtitle {
+  margin-top: 10px;
+  color: #9ca3af;
+}
+
+/* grid */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 16px;
+  margin-top: 30px;
 }
 
-/* Card */
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .title {
+    font-size: 44px;
+  }
+}
+
+/* card */
 .card {
-  padding: 16px;
+  padding: 18px;
   border-radius: 16px;
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(12px);
   border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.3s;
 }
 
-/* Neon */
-.neon {
-  color: #22d3ee;
+.card:hover {
+  transform: translateY(-5px);
 }
 
-/* Responsive text */
-.title {
-  font-size: 22px;
+/* highlight card */
+.cardHighlight {
+  padding: 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #22d3ee, #60a5fa);
+  color: black;
+  font-weight: 600;
 }
 
-@media (min-width: 768px) {
-  .title {
-    font-size: 36px;
-  }
+/* button */
+.btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 12px 22px;
+  background: #22d3ee;
+  color: black;
+  border-radius: 12px;
+  font-weight: 600;
 }
 
-/* Progress dots */
-.progress {
+/* nav */
+.nav {
   position: fixed;
-  left: 10px;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.nav button {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(255,255,255,0.1);
+  color: white;
+}
+
+/* dots */
+.dots {
+  position: fixed;
+  left: 15px;
   top: 50%;
 }
 
 .dot {
   width: 8px;
   height: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   border-radius: 50%;
   background: gray;
 }
 
 .active {
   background: #22d3ee;
-}
-
-/* Counter */
-.counter {
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  color: gray;
 }
