@@ -1,6 +1,13 @@
 "use client";
 
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
 
 const data = [
   { name: "W1", value: 10 },
@@ -14,9 +21,15 @@ export default function SEOChart() {
     <div style={{ width: "100%", height: 200 }}>
       <ResponsiveContainer>
         <LineChart data={data}>
-          <XAxis dataKey="name" stroke="#aaa" />
-          <YAxis stroke="#aaa" />
-          <Line type="monotone" dataKey="value" stroke="#22d3ee" />
+          <XAxis dataKey="name" stroke="#94a3b8" />
+          <YAxis stroke="#94a3b8" />
+          <Tooltip />
+          <Line
+            type="monotone"
+            dataKey="value"
+            stroke="#22d3ee"
+            strokeWidth={3}
+          />
         </LineChart>
       </ResponsiveContainer>
     </div>
