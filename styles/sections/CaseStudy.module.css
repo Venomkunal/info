@@ -1,0 +1,99 @@
+.section {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at top, #0f0f12, #000);
+  color: white;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
+
+/* TITLE */
+.title {
+  font-size: 48px;
+  margin-bottom: 50px;
+}
+
+.title span {
+  background: linear-gradient(90deg, #00f0ff, #7a5cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* TIMELINE */
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* CARDS */
+.card {
+  width: 250px;
+  padding: 25px;
+  border-radius: 16px;
+  backdrop-filter: blur(15px);
+  background: rgba(20,20,25,0.8);
+}
+
+/* BEFORE */
+.before {
+  border: 1px solid rgba(255,80,80,0.4);
+}
+
+/* AFTER */
+.after {
+  border: 1px solid rgba(0,240,255,0.6);
+  box-shadow: 0 0 40px rgba(0,240,255,0.3);
+}
+
+/* PROCESS */
+.process {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* STEPS */
+.step {
+  padding: 10px 14px;
+  background: #111;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* RESULTS */
+.results {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.results strong {
+  font-size: 24px;
+}
+
+/* TAGLINE */
+.tagline {
+  margin-top: 40px;
+  color: #aaa;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .timeline {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .title {
+    font-size: 30px;
+  }
+}

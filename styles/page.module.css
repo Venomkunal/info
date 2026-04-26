@@ -1,13 +1,21 @@
 .container {
   width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: #020617;
   color: white;
 }
 
 .slider {
   display: flex;
+  height: 100%;
+}
+
+.slider > * {
+  width: 100vw;        /* 🔥 REQUIRED */
+  height: 100vh;
+  flex-shrink: 0;      /* 🔥 REQUIRED */
 }
 
 .slide {
@@ -83,11 +91,12 @@
 
 /* NAV BUTTONS (IMPROVED) */
 .nav {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
+  position: absolute;
+  top: 50%;
+  width: 100%;
   display: flex;
-  gap: 12px;
+  justify-content: space-between;
+  padding: 0 20px;
 }
 
 .navBtn {
@@ -246,4 +255,32 @@
 
   background: #60a5fa;
   color: black;
+}
+/* ========================= */
+/* 📱 MOBILE FIX (IMPORTANT) */
+/* ========================= */
+@media (max-width: 768px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .bigTitle {
+    font-size: 32px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pricingGrid {
+    flex-direction: column;
+  }
+
+  .statsGrid {
+    flex-direction: column;
+  }
+
+  .slide {
+    padding: 20px;
+  }
 }

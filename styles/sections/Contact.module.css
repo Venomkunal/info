@@ -1,0 +1,102 @@
+.section {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: radial-gradient(circle at top, #0f0f12, #000);
+  color: white;
+  text-align: center;
+}
+
+/* CONTAINER */
+.container {
+  max-width: 800px;
+}
+
+/* TITLE */
+.title {
+  font-size: 48px;
+  font-weight: 800;
+}
+
+.title span {
+  background: linear-gradient(90deg, #00f0ff, #7a5cff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* SUBTEXT */
+.subtitle {
+  margin-top: 10px;
+  color: #aaa;
+}
+
+/* CHAT BOX */
+.chatBox {
+  margin-top: 25px;
+  padding: 14px 20px;
+  border-radius: 10px;
+
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+
+  display: inline-block;
+  font-size: 14px;
+}
+
+/* CURSOR */
+.cursor {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* CTA BUTTON */
+.cta {
+  display: inline-block;
+  margin-top: 25px;
+
+  padding: 16px 32px;
+  border-radius: 12px;
+
+  background: linear-gradient(90deg, #00f0ff, #7a5cff);
+  color: black;
+  font-weight: 700;
+  text-decoration: none;
+
+  box-shadow: 0 0 30px rgba(0,240,255,0.4);
+  animation: pulse 2s infinite;
+}
+
+/* PULSE EFFECT */
+@keyframes pulse {
+  0% { box-shadow: 0 0 20px rgba(0,240,255,0.3); }
+  50% { box-shadow: 0 0 40px rgba(0,240,255,0.7); }
+  100% { box-shadow: 0 0 20px rgba(0,240,255,0.3); }
+}
+
+/* URGENCY */
+.urgency {
+  margin-top: 15px;
+  color: #ffcc00;
+  font-size: 14px;
+}
+
+/* TRUST */
+.trust {
+  margin-top: 8px;
+  color: #777;
+  font-size: 13px;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .title {
+    font-size: 30px;
+  }
+}

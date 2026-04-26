@@ -1,5 +1,7 @@
+"use client";
+
 import { ReactNode } from "react";
-import styles from "../styles/Slide.module.css";
+import styles from "./Slide.module.css";
 
 type Props = {
   children: ReactNode;
@@ -8,7 +10,9 @@ type Props = {
 export default function Slide({ children }: Props) {
   return (
     <section className={styles.slide}>
-      <div className={styles.content}>{children}</div>
+      <div className={styles.inner}>
+        <div className={styles.content}>{children}</div>
+      </div>
     </section>
   );
 }
