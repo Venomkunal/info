@@ -1,94 +1,155 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
 import styles from "../../styles/sections/CaseStudy.module.css";
 
-const steps = [
-  "Website Development",
-  "SEO Optimization",
-  "Automation Setup",
-  "Performance Boost",
+const slides = [
+  {
+    title: "Day 0",
+    content: (
+      <>
+        <p>❌ No Website</p>
+        <p>❌ No Leads</p>
+        <p>❌ Manual Work</p>
+      </>
+    ),
+  },
+  {
+    title: "Process",
+    content: (
+      <>
+        <p>⚙️ Website Development</p>
+        <p>📈 SEO Optimization</p>
+        <p>🤖 Automation Setup</p>
+        <p>🚀 Performance Boost</p>
+      </>
+    ),
+  },
+  {
+    title: "Day 90",
+    content: (
+      <div className={styles.results}>
+        <div>
+          <strong>+300%</strong>
+          <span>Traffic</span>
+        </div>
+        <div>
+          <strong>+180%</strong>
+          <span>Leads</span>
+        </div>
+        <div>
+          <strong>3x</strong>
+          <span>Revenue</span>
+        </div>
+      </div>
+    ),
+  },
 ];
 
 export default function CaseStudy() {
+  const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const next = () =>
+    setIndex((i) => (i + 1) % slides.length);
+
+  const prev = () =>
+    setIndex((i) => (i - 1 + slides.length) % slides.length);
+
+  // 🔥 AUTO PLAY
+  useEffect(() => {
+    if (paused) return;
+
+    intervalRef.current = setInterval(() => {
+      next();
+    }, 3000);
+
+    return () => {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    };
+  }, [paused]);
+
   return (
     <section className={styles.section}>
       <div className={styles.container}>
 
         {/* TITLE */}
-        <motion.h1
-          className={styles.title}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
+        <h1 className={styles.title}>
           From Zero → <span>3x Revenue</span>
-        </motion.h1>
+        </h1>
 
-        {/* TIMELINE */}
-        <div className={styles.timeline}>
+        {/* SLIDER */}
+        <div
+          className={styles.sliderWrap}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+        >
 
-          {/* BEFORE */}
-          <motion.div
-            className={`${styles.card} ${styles.before}`}
-            initial={{ opacity: 0, x: -80 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            <h3>Day 0</h3>
-            <p>❌ No Website</p>
-            <p>❌ No Leads</p>
-            <p>❌ Manual Work</p>
-          </motion.div>
-
-          {/* PROCESS LINE */}
-          <div className={styles.process}>
-            {steps.map((step, i) => (
-              <motion.div
-                key={i}
-                className={styles.step}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.3 }}
-              >
-                {step}
-              </motion.div>
-            ))}
+          {/* 🔥 PROGRESS BAR */}
+          <div className={styles.progressBar}>
+            <motion.div
+              key={index}
+              className={styles.progressFill}
+              initial={{ width: "0%" }}
+              animate={{ width: "100%" }}
+              transition={{ duration: 3, ease: "linear" }}
+            />
           </div>
 
-          {/* AFTER */}
-          <motion.div
-            className={`${styles.card} ${styles.after}`}
-            initial={{ opacity: 0, x: 80 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            <h3>Day 90</h3>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              className={styles.slide}
+              initial={{ opacity: 0, x: 120 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -120 }}
+              transition={{ duration: 0.6, ease: "easeInOut" }}
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              onDragStart={() => setPaused(true)}
+              onDragEnd={(e, info) => {
+                setPaused(false);
 
-            <div className={styles.results}>
-              <div>
-                <strong>+300%</strong>
-                <span>Traffic</span>
+                if (info.offset.x < -80) next();
+                if (info.offset.x > 80) prev();
+              }}
+            >
+              <h2>{slides[index].title}</h2>
+
+              <div className={styles.content}>
+                {slides[index].content}
               </div>
-              <div>
-                <strong>+180%</strong>
-                <span>Leads</span>
-              </div>
-              <div>
-                <strong>3x</strong>
-                <span>Revenue</span>
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </AnimatePresence>
 
         </div>
 
+        {/* DOT NAV */}
+        <div className={styles.progressDots}>
+          {slides.map((_, i) => (
+            <div
+              key={i}
+              className={`${styles.dot} ${i === index ? styles.active : ""}`}
+              onClick={() => {
+                setIndex(i);
+                setPaused(true);
+              }}
+            />
+          ))}
+        </div>
+
+        {/* NAV */}
+        <div className={styles.nav}>
+          <button onClick={prev}>‹</button>
+          <button onClick={next}>›</button>
+        </div>
+
         {/* TAGLINE */}
-        <motion.p
-          className={styles.tagline}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-        >
+        <p className={styles.tagline}>
           We don’t just build websites. We build growth systems.
-        </motion.p>
+        </p>
 
       </div>
     </section>

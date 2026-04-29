@@ -9,6 +9,7 @@ import Results from "@/components/sections/Results";
 import Features from "@/components/sections/Features";
 import CaseStudy from "@/components/sections/CaseStudy";
 import BeforeAfterSlide from "@/components/sections/BeforeAfterSlide";
+import WorksDemo from "@/components/sections/WorksDemo";
 import Pricing from "@/components/sections/Pricing";
 import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
@@ -18,8 +19,9 @@ export default function Home() {
     <Hero key="hero" />,
     <BeforeAfterSlide key="before-after" />,
     <Results key="results" />,
-    <Features key="features" />,
     <CaseStudy key="case" />,
+    <Features key="features" />,
+    <WorksDemo key ="worksdemo"/>,
     <Pricing key="pricing" />,        // long → scroll inside
     <Testimonials key="testimonials" />, // long → scroll inside
     <Contact key="contact" />,
