@@ -1,10 +1,16 @@
 /* ===== ROOT ===== */
 .hero {
-  width: 100vw;          /* 🔥 REQUIRED */
-  height: 100vh;
-  flex-shrink: 0;        /* 🔥 REQUIRED */
+  width: 100vw;
+  height: 100vh;              /* 🔥 MUST */
+  flex-shrink: 0;
 
   position: relative;
+  overflow: hidden;
+}
+
+/* 🔥 SCROLL CONTROL */
+.scrollInner {
+  height: 100%;
   overflow: hidden;
 }
 
@@ -12,11 +18,10 @@
 .bg {
   position: absolute;
   inset: 0;
-  overflow: hidden;
   z-index: 0;
+  overflow: hidden;
 }
 
-/* animated gradient blobs */
 .gradient1,
 .gradient2 {
   position: absolute;
@@ -49,7 +54,6 @@
   to { transform: translate(-200px, -150px); }
 }
 
-/* grid overlay */
 .grid {
   position: absolute;
   inset: 0;
@@ -58,7 +62,7 @@
   background-size: 40px 40px;
 }
 
-/* cursor spotlight */
+/* spotlight */
 .spotlight {
   position: absolute;
   width: 400px;
@@ -83,7 +87,7 @@
   padding: 0 5%;
 }
 
-/* ===== LEFT ===== */
+/* LEFT */
 .content {
   display: flex;
   flex-direction: column;
@@ -112,7 +116,7 @@
   max-width: 500px;
 }
 
-/* ===== CTA ===== */
+/* CTA */
 .cta {
   display: flex;
   gap: 15px;
@@ -135,12 +139,12 @@
   text-decoration: none;
 }
 
-/* ===== RIGHT ===== */
+/* RIGHT */
 .visual {
   position: relative;
+  margin-top: 20px;
 }
 
-/* glass card */
 .glassCard {
   background: rgba(20,20,25,0.85);
   backdrop-filter: blur(20px);
@@ -154,7 +158,7 @@
   color: #ccc;
 }
 
-/* floating badges */
+/* floating */
 .floating1,
 .floating2 {
   position: absolute;
@@ -177,17 +181,22 @@
 
 /* ===== MOBILE ===== */
 @media (max-width: 768px) {
+
+  .scrollInner {
+    overflow-y: auto;                /* 🔥 ENABLE SCROLL */
+    -webkit-overflow-scrolling: touch;
+  }
+
   .container {
     grid-template-columns: 1fr;
     text-align: center;
+
+    align-items: flex-start;         /* 🔥 FIX VISIBILITY */
+    padding-top: 100px;
+    gap: 40px;
   }
 
   .title {
     font-size: 36px;
-  }
-
-  .hero {
-    height: auto;
-    padding: 80px 20px;
   }
 }

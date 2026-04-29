@@ -1,26 +1,41 @@
+/* ===== SLIDE ROOT ===== */
 .section {
   width: 100vw;
-  height: 100vh;
-  padding: 60px 5%;
+  height: 100vh;   /* 🔥 FIXED */
+  flex-shrink: 0;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  overflow: hidden;
 
   background: radial-gradient(circle at top, #0f0f12, #000);
   color: white;
 }
 
+/* 🔥 SCROLL CONTROL */
+.scrollInner {
+  height: 100%;
+  overflow: hidden;
+}
+
+/* CONTAINER */
 .container {
   max-width: 1100px;
-  width: 100%;
+  margin: auto;
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: 0 5%;
   text-align: center;
 }
 
 /* TITLE */
 .title {
-  font-size: 48px;
-  margin-bottom: 50px;
+  font-size: 42px;
+  margin-bottom: 40px;
+  font-weight: 800;
 }
 
 .title span {
@@ -31,34 +46,33 @@
 
 /* GRID */
 .grid {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 25px;
 }
 
 /* CARD */
 .card {
-  width: 280px;
   padding: 30px;
   border-radius: 18px;
   background: rgba(20,20,25,0.85);
   backdrop-filter: blur(15px);
+
+  border: 1px solid rgba(255,255,255,0.05);
   transition: 0.3s;
-  position: relative;
 }
 
-/* SIDE CARDS (LESS FOCUS) */
+/* SIDE */
 .side {
-  opacity: 0.6;
+  opacity: 0.7;
   transform: scale(0.95);
 }
 
 /* HIGHLIGHT */
 .highlight {
   border: 1px solid #00f0ff;
-  box-shadow: 0 0 50px rgba(0,240,255,0.3);
-  transform: scale(1.1);
-  z-index: 2;
+  box-shadow: 0 0 50px rgba(0,240,255,0.25);
+  transform: scale(1.05);
 }
 
 /* BADGE */
@@ -75,7 +89,7 @@
 
 /* PRICE */
 .price {
-  font-size: 36px;
+  font-size: 34px;
   margin: 10px 0;
 }
 
@@ -88,51 +102,56 @@
 /* LIST */
 .grid ul {
   margin: 15px 0;
-  padding: 0;
   list-style: none;
+  padding: 0;
 }
 
 .grid li {
-  margin-bottom: 6px;
-  font-size: 14px;
   color: #ccc;
 }
 
 /* BUTTON */
 .btn {
   display: block;
-  margin-top: 10px;
+  margin-top: 12px;
   padding: 12px;
   border-radius: 10px;
   background: linear-gradient(90deg, #00f0ff, #7a5cff);
   color: black;
   text-decoration: none;
-  font-weight: 600;
 }
 
-/* ROI MESSAGE */
+/* ROI */
 .roi {
-  margin-top: 30px;
+  margin-top: 25px;
   color: #aaa;
-  font-size: 16px;
 }
 
-/* MOBILE */
+/* ===== MOBILE ===== */
 @media (max-width: 768px) {
+
+  .scrollInner {
+    overflow-y: auto;   /* 🔥 ENABLE SCROLL */
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .container {
+    justify-content: flex-start;   /* 🔥 IMPORTANT */
+    padding-top: 80px;
+    padding-bottom: 40px;
+  }
+
   .grid {
-    flex-direction: column;
-  }
-
-  .highlight {
-    transform: scale(1);
-  }
-
-  .side {
-    opacity: 1;
-    transform: none;
+    grid-template-columns: 1fr;
   }
 
   .title {
-    font-size: 30px;
+    font-size: 28px;
+  }
+
+  .side,
+  .highlight {
+    transform: none;
+    opacity: 1;
   }
 }

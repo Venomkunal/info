@@ -20,8 +20,8 @@ export default function Home() {
     <Results key="results" />,
     <Features key="features" />,
     <CaseStudy key="case" />,
-    <Pricing key="pricing" />,
-    <Testimonials key="testimonials" />,
+    <Pricing key="pricing" />,        // long → scroll inside
+    <Testimonials key="testimonials" />, // long → scroll inside
     <Contact key="contact" />,
   ];
 
@@ -31,7 +31,7 @@ export default function Home() {
   const next = () => setIndex((i) => Math.min(i + 1, total - 1));
   const prev = () => setIndex((i) => Math.max(i - 1, 0));
 
-  // keyboard navigation
+  // Keyboard
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "ArrowRight") next();
@@ -41,18 +41,36 @@ export default function Home() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // swipe
+  // Swipe (fixed)
   const startX = useRef(0);
+  const startY = useRef(0);
 
   const onTouchStart = (e: React.TouchEvent) => {
     startX.current = e.touches[0].clientX;
+    startY.current = e.touches[0].clientY;
   };
 
   const onTouchEnd = (e: React.TouchEvent) => {
-    const delta = e.changedTouches[0].clientX - startX.current;
-    if (delta > 50) prev();
-    if (delta < -50) next();
+    const deltaX = e.changedTouches[0].clientX - startX.current;
+    const deltaY = e.changedTouches[0].clientY - startY.current;
+
+    // Only horizontal swipe triggers slide
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 80) prev();
+      if (deltaX < -80) next();
+    }
   };
+
+  // Optional: Mouse wheel navigation (desktop)
+  useEffect(() => {
+    const onWheel = (e: WheelEvent) => {
+      if (e.deltaY > 60) next();
+      if (e.deltaY < -60) prev();
+    };
+
+    window.addEventListener("wheel", onWheel);
+    return () => window.removeEventListener("wheel", onWheel);
+  }, []);
 
   return (
     <div
@@ -63,9 +81,8 @@ export default function Home() {
       <motion.div
         className={styles.slider}
         animate={{ x: `-${index * 100}%` }}
-        transition={{ type: "spring", stiffness: 70, damping: 20 }}
+        transition={{ duration: 0.6, ease: "easeInOut" }}
       >
-        
         {slides}
       </motion.div>
 
@@ -74,7 +91,11 @@ export default function Home() {
         <button onClick={prev} disabled={index === 0} className={styles.navBtn}>
           ‹
         </button>
-        <button onClick={next} disabled={index === total - 1} className={styles.navBtn}>
+        <button
+          onClick={next}
+          disabled={index === total - 1}
+          className={styles.navBtn}
+        >
           ›
         </button>
       </div>

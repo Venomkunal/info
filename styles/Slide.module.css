@@ -3,16 +3,11 @@
   width: 100vw;
   min-height: 100vh;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block; /* ❗ important */
 
   padding: 60px 20px;
-
   position: relative;
-  overflow: hidden;
 
-  /* subtle background */
   background: radial-gradient(circle at top, #111, #000);
 }
 

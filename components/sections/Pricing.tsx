@@ -38,71 +38,70 @@ const plans = [
 export default function Pricing() {
   return (
     <section className={styles.section}>
-      <div className={styles.container}>
+      
+      {/* 🔥 SCROLL WRAPPER */}
+      <div className={styles.scrollInner}>
+        
+        <div className={styles.container}>
 
-        {/* TITLE */}
-        <motion.h1
-          className={styles.title}
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          Investment → <span>Returns</span>
-        </motion.h1>
+          <motion.h1
+            className={styles.title}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            Investment → <span>Returns</span>
+          </motion.h1>
 
-        {/* GRID */}
-        <div className={styles.grid}>
-          {plans.map((plan, i) => (
-            <motion.div
-              key={i}
-              className={`${styles.card} ${
-                plan.highlight ? styles.highlight : styles.side
-              }`}
-              initial={{ opacity: 0, y: 60 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.2 }}
-              whileHover={{ scale: 1.05 }}
-            >
-              {plan.highlight && (
-                <div className={styles.badge}>Most Chosen</div>
-              )}
-
-              <h3>{plan.name}</h3>
-
-              {/* PRICE ANIMATION */}
-              <motion.h1
-                className={styles.price}
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.3 }}
+          <div className={styles.grid}>
+            {plans.map((plan, i) => (
+              <motion.div
+                key={i}
+                className={`${styles.card} ${
+                  plan.highlight ? styles.highlight : styles.side
+                }`}
+                initial={{ opacity: 0, y: 60 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.2 }}
+                whileHover={{ scale: 1.05 }}
               >
-                {plan.price}
-              </motion.h1>
+                {plan.highlight && (
+                  <div className={styles.badge}>Most Chosen</div>
+                )}
 
-              <p className={styles.desc}>{plan.desc}</p>
+                <h3>{plan.name}</h3>
 
-              <ul>
-                {plan.features.map((f, idx) => (
-                  <li key={idx}>✔ {f}</li>
-                ))}
-              </ul>
+                <motion.h1
+                  className={styles.price}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                >
+                  {plan.price}
+                </motion.h1>
 
-              <a href="#" className={styles.btn}>
-                Choose Plan
-              </a>
-            </motion.div>
-          ))}
+                <p className={styles.desc}>{plan.desc}</p>
+
+                <ul>
+                  {plan.features.map((f, idx) => (
+                    <li key={idx}>✔ {f}</li>
+                  ))}
+                </ul>
+
+                <a href="#" className={styles.btn}>
+                  Choose Plan
+                </a>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.p
+            className={styles.roi}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          >
+            One good client can recover your entire investment.
+          </motion.p>
+
         </div>
-
-        {/* ROI MESSAGE */}
-        <motion.p
-          className={styles.roi}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1 }}
-        >
-          One good client can recover your entire investment.
-        </motion.p>
-
       </div>
     </section>
   );
