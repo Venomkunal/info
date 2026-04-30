@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Viewport } from "next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,6 +17,12 @@ export const metadata: Metadata = {
   title: "Shineweb Tech Creations",
   description: "Complete IT • SEO • Software • Hardware",
 };
+export const viewport: Viewport = {
+  width: 'devie-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
 
 export default function RootLayout({
   children,
