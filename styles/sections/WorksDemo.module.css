@@ -1,11 +1,12 @@
 /* ROOT */
 .section {
-  min-height: 100vh;
+  min-height: 100vh; 
   display: flex;
   flex-direction: column;
   background: radial-gradient(circle at top, #0f172a, #020617);
   color: white;
-  overflow: hidden;
+  overflow-y: auto; /* Enable page scrolling */
+  padding-bottom: 50px;
 }
 
 /* HEADER */
