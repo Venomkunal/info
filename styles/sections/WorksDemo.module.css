@@ -154,6 +154,11 @@
   transform-origin: top left;
   border: none;
 }
+
+@media (max-width: 768px){
+width:500px
+height:200px
+}
 /* ================= MOBILE ================= */
 
 .phoneWrapper {
