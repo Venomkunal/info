@@ -21,7 +21,6 @@ export default function Home() {
     <Results key="results" />,
     <CaseStudy key="case" />,
     <Features key="features" />,
-    <WorksDemo key ="worksdemo"/>,
     <Pricing key="pricing" />,        // long → scroll inside
     <Testimonials key="testimonials" />, // long → scroll inside
     <Contact key="contact" />,
