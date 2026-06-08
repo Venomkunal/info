@@ -156,8 +156,9 @@
 }
 
 @media (max-width: 768px){
-width:500px
+.browserBody iframe {brwidth:500px
 height:200px
+}
 }
 /* ================= MOBILE ================= */
 
