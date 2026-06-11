@@ -23,7 +23,7 @@ const demos = [
 ];
 
 const IFRAME_WIDTH = 1760;
-const IFRAME_HEIGHT = 768;
+const IFRAME_HEIGHT =885;
 
 export default function WorksDemo() {
   const [active, setActive] = useState(0);
