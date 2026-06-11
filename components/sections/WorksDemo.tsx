@@ -22,51 +22,54 @@ const demos = [
   },
 ];
 
+const IFRAME_WIDTH = 1760;
+const IFRAME_HEIGHT = 768;
+
 export default function WorksDemo() {
   const [active, setActive] = useState(0);
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
   const [loaded, setLoaded] = useState(false);
+  const [scale, setScale] = useState(1);
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const screenRef = useRef<HTMLDivElement>(null);
 
-  /* Auto Scroll (only works if iframe allows access) */
   useEffect(() => {
-    let interval: any;
+    const updateScale = () => {
+      if (!screenRef.current) return;
 
-    if (loaded && iframeRef.current) {
-      interval = setInterval(() => {
-        try {
-          const iframe = iframeRef.current;
-          const doc = iframe?.contentWindow?.document;
+      const screenWidth = screenRef.current.offsetWidth;
+      const screenHeight = screenRef.current.offsetHeight;
 
-          if (!doc) return;
+      const scaleX = screenWidth / IFRAME_WIDTH;
+      const scaleY = screenHeight / IFRAME_HEIGHT;
 
-          const maxScroll = doc.body.scrollHeight;
-          const current = doc.documentElement.scrollTop;
+      setScale(Math.min(scaleX, scaleY));
+    };
 
-          if (current + 400 >= maxScroll) {
-            doc.documentElement.scrollTo({ top: 0, behavior: "smooth" });
-          } else {
-            doc.documentElement.scrollBy({ top: 250, behavior: "smooth" });
-          }
-        } catch {
-          // Cross-origin restriction (normal)
-        }
-      }, 2500);
+    updateScale();
+
+    window.addEventListener("resize", updateScale);
+
+    const resizeObserver = new ResizeObserver(updateScale);
+
+    if (screenRef.current) {
+      resizeObserver.observe(screenRef.current);
     }
 
-    return () => clearInterval(interval);
-  }, [loaded, active]);
+    return () => {
+      window.removeEventListener("resize", updateScale);
+      resizeObserver.disconnect();
+    };
+  }, [device]);
 
   return (
     <section className={styles.section}>
-      {/* Header */}
       <div className={styles.container}>
         <h1 className={styles.title}>
           Our Work Live Demos <span>Preview</span>
         </h1>
 
-        {/* Device Switch */}
         <div className={styles.deviceSwitch}>
           <button
             className={device === "desktop" ? styles.active : ""}
@@ -89,7 +92,6 @@ export default function WorksDemo() {
           </button>
         </div>
 
-        {/* Tabs */}
         <div className={styles.tabs}>
           {demos.map((demo, i) => (
             <button
@@ -106,17 +108,17 @@ export default function WorksDemo() {
         </div>
       </div>
 
-      {/* Preview Area */}
       <div className={styles.previewArea}>
-        
-        {/* Desktop */}
         {device === "desktop" && (
           <div className={styles.macWrapper}>
-            <img src="/macbook.png" className={styles.macImage} />
+            <img
+              src="/macbook.png"
+              alt="MacBook"
+              className={styles.macImage}
+            />
 
             <div className={styles.macScreen}>
               <div className={styles.browser}>
-                
                 <div className={styles.browserTop}>
                   <div className={styles.dots}>
                     <span className={styles.red}></span>
@@ -129,55 +131,74 @@ export default function WorksDemo() {
                   </div>
                 </div>
 
-                <div className={styles.browserBody}>
-                  {!loaded && <div className={styles.loader}>Loading...</div>}
+                <div
+                  ref={screenRef}
+                  className={styles.browserBody}
+                >
+                  {!loaded && (
+                    <div className={styles.loader}>
+                      Loading...
+                    </div>
+                  )}
 
                   <iframe
                     ref={iframeRef}
                     key={demos[active].url}
                     src={demos[active].url}
                     onLoad={() => setLoaded(true)}
+                    style={{
+                      width: `${IFRAME_WIDTH}px`,
+                      height: `${IFRAME_HEIGHT}px`,
+                      transform: `scale(${scale})`,
+                      transformOrigin: "top left",
+                    }}
                   />
                 </div>
-
               </div>
             </div>
           </div>
         )}
 
-        {/* Mobile */}
         {device === "mobile" && (
           <div className={styles.phoneWrapper}>
-            <img src="/iphone.png" className={styles.phoneImage} />
+            <img
+              src="/iphone.png"
+              alt="iPhone"
+              className={styles.phoneImage}
+            />
 
             <div className={styles.phoneScreen}>
               <div className={styles.mobileBrowser}>
-                
                 <div className={styles.mobileTop}>
                   🔒 {demos[active].url}
                 </div>
 
                 <div className={styles.mobileBody}>
-                  {!loaded && <div className={styles.loader}>Loading...</div>}
+                  {!loaded && (
+                    <div className={styles.loader}>
+                      Loading...
+                    </div>
+                  )}
 
                   <iframe
-                    ref={iframeRef}
                     key={demos[active].url}
                     src={demos[active].url}
                     onLoad={() => setLoaded(true)}
                   />
                 </div>
-
               </div>
             </div>
           </div>
         )}
-
       </div>
 
-      {/* CTA */}
       <div className={styles.actionWrap}>
-        <a href={demos[active].url} target="_blank" className={styles.btn}>
+        <a
+          href={demos[active].url}
+          target="_blank"
+          rel="noreferrer"
+          className={styles.btn}
+        >
           Open Full Site ↗
         </a>
       </div>
