@@ -196,6 +196,7 @@ export default function WorksDemo() {
                   <iframe
                     key={demos[active].url}
                     src={demos[active].url}
+                    className={styles.mobileiframe}
                     onLoad={() => setLoaded(true)}
                   />
                 </div>
