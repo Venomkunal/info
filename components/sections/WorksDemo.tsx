@@ -46,8 +46,8 @@ export default function WorksDemo() {
     let iframeHeight = 889;
 
     if (window.innerWidth <= 480) {
-      iframeWidth = 1980;
-      iframeHeight = 865;
+      iframeWidth = 2045;
+      iframeHeight = 867;
     } else if (window.innerWidth <= 768) {
       iframeWidth = 1910;
       iframeHeight = 1024;
