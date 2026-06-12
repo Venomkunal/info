@@ -22,46 +22,59 @@ const demos = [
   },
 ];
 
-const IFRAME_WIDTH = 1366;
-const IFRAME_HEIGHT = 768;
-
 export default function WorksDemo() {
   const [active, setActive] = useState(0);
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
   const [loaded, setLoaded] = useState(false);
   const [scale, setScale] = useState(1);
+  const [iframeSize, setIframeSize] = useState({
+  width: 2800,
+  height: 980,
+});
 
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const screenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const updateScale = () => {
-      if (!screenRef.current) return;
+  const updateScale = () => {
+    if (!screenRef.current) return;
 
-      const screenWidth = screenRef.current.offsetWidth;
-      const screenHeight = screenRef.current.offsetHeight;
+    const screenWidth = screenRef.current.offsetWidth;
+    const screenHeight = screenRef.current.offsetHeight;
 
-      const scaleX = screenWidth / IFRAME_WIDTH;
-      const scaleY = screenHeight / IFRAME_HEIGHT;
+    let iframeWidth = 1765;
+    let iframeHeight = 889;
 
-      setScale(Math.min(scaleX, scaleY));
-    };
-
-    updateScale();
-
-    window.addEventListener("resize", updateScale);
-
-    const resizeObserver = new ResizeObserver(updateScale);
-
-    if (screenRef.current) {
-      resizeObserver.observe(screenRef.current);
+    if (window.innerWidth <= 480) {
+      iframeWidth = 1980;
+      iframeHeight = 865;
+    } else if (window.innerWidth <= 768) {
+      iframeWidth = 1910;
+      iframeHeight = 1024;
+    } else if (window.innerWidth <= 1024) {
+      iframeWidth = 1980;
+      iframeHeight = 989;
     }
 
-    return () => {
-      window.removeEventListener("resize", updateScale);
-      resizeObserver.disconnect();
-    };
-  }, [device]);
+    setIframeSize({
+      width: iframeWidth,
+      height: iframeHeight,
+    });
+
+    const scaleX = screenWidth / iframeWidth;
+    const scaleY = screenHeight / iframeHeight;
+
+    setScale(Math.min(scaleX, scaleY));
+  };
+
+  updateScale();
+
+  window.addEventListener("resize", updateScale);
+
+  return () => {
+    window.removeEventListener("resize", updateScale);
+  };
+}, []);
 
   return (
     <section className={styles.section}>
@@ -142,17 +155,17 @@ export default function WorksDemo() {
                   )}
 
                   <iframe
-                    ref={iframeRef}
-                    key={demos[active].url}
-                    src={demos[active].url}
-                    onLoad={() => setLoaded(true)}
-                    style={{
-                      width: `${IFRAME_WIDTH}px`,
-                      height: `${IFRAME_HEIGHT}px`,
-                      transform: `scale(${scale})`,
-                      transformOrigin: "top left",
-                    }}
-                  />
+  ref={iframeRef}
+  key={demos[active].url}
+  src={demos[active].url}
+  onLoad={() => setLoaded(true)}
+  style={{
+    width: `${iframeSize.width}px`,
+    height: `${iframeSize.height}px`,
+    transform: `scale(${scale})`,
+    transformOrigin: "top left",
+  }}
+/>
                 </div>
               </div>
             </div>
