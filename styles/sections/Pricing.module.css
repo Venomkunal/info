@@ -1,12 +1,10 @@
 /* ===== SLIDE ROOT ===== */
 .section {
   width: 100vw;
-  height: 100vh;   /* 🔥 FIXED */
+  height: 100vh;
   flex-shrink: 0;
-
   position: relative;
   overflow: hidden;
-
   background: radial-gradient(circle at top, #0f0f12, #000);
   color: white;
 }
@@ -14,20 +12,18 @@
 /* 🔥 SCROLL CONTROL */
 .scrollInner {
   height: 100%;
-  overflow: hidden;
+  overflow-y: auto; /* Changed to always allow scrolling if screen is too small vertically */
 }
 
 /* CONTAINER */
 .container {
-  max-width: 1100px;
+  max-width: 1280px; /* Increased slightly to fit 4 plans comfortably */
   margin: auto;
-  height: 100%;
-
+  min-height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  padding: 0 5%;
+  padding: 40px 5%;
   text-align: center;
 }
 
@@ -47,111 +43,154 @@
 /* GRID */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* Responsive 4 columns */
   gap: 25px;
+  align-items: stretch;
 }
 
 /* CARD */
 .card {
-  padding: 30px;
+  padding: 30px 25px;
   border-radius: 18px;
-  background: rgba(20,20,25,0.85);
+  background: rgba(20, 20, 25, 0.85);
   backdrop-filter: blur(15px);
-
-  border: 1px solid rgba(255,255,255,0.05);
-  transition: 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 }
 
-/* SIDE */
+/* SIDE (Normal Plans) */
 .side {
-  opacity: 0.7;
-  transform: scale(0.95);
+  opacity: 0.85;
 }
 
-/* HIGHLIGHT */
+/* HIGHLIGHT (Popular Plan) */
 .highlight {
   border: 1px solid #00f0ff;
-  box-shadow: 0 0 50px rgba(0,240,255,0.25);
-  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.15);
+  transform: scale(1.02);
+  opacity: 1;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(20,20,25,0.95) 0%, rgba(0, 240, 255, 0.05) 100%);
 }
 
 /* BADGE */
 .badge {
   position: absolute;
-  top: -10px;
-  right: 10px;
-  background: #00f0ff;
+  top: -12px;
+  right: 50%;
+  transform: translateX(50%);
+  background: linear-gradient(90deg, #00f0ff, #7a5cff);
   color: black;
-  padding: 5px 10px;
-  font-size: 12px;
-  border-radius: 6px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
 /* PRICE */
 .price {
-  font-size: 34px;
-  margin: 10px 0;
+  font-size: 38px;
+  margin: 15px 0 5px;
+  font-weight: 800;
 }
 
 /* TEXT */
 .desc {
-  color: #aaa;
+  color: #a0a0a0;
   font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+  height: 42px; /* Fixed height to keep grids aligned */
 }
 
 /* LIST */
 .grid ul {
-  margin: 15px 0;
+  margin: 0 0 25px 0;
   list-style: none;
   padding: 0;
+  text-align: left;
+  flex-grow: 1; /* Pushes the button to the bottom */
 }
 
 .grid li {
-  color: #ccc;
+  color: #d1d1d1;
+  font-size: 14px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkmark {
+  color: #00f0ff;
+  font-size: 12px;
 }
 
 /* BUTTON */
 .btn {
   display: block;
-  margin-top: 12px;
-  padding: 12px;
+  width: 100%;
+  margin-top: auto;
+  padding: 14px;
   border-radius: 10px;
   background: linear-gradient(90deg, #00f0ff, #7a5cff);
   color: black;
-  text-decoration: none;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.btn:hover {
+  opacity: 0.9;
+  transform: scale(1.02);
+}
+
+.side .btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.side .btn:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
 /* ROI */
 .roi {
-  margin-top: 25px;
+  margin-top: 40px;
   color: #aaa;
+  font-size: 16px;
+  font-style: italic;
 }
 
 /* ===== MOBILE ===== */
-@media (max-width: 768px) {
-
-  .scrollInner {
-    overflow-y: auto;   /* 🔥 ENABLE SCROLL */
-    -webkit-overflow-scrolling: touch;
-  }
-
+@media (max-width: 900px) {
   .container {
-    justify-content: flex-start;   /* 🔥 IMPORTANT */
-    padding-top: 80px;
-    padding-bottom: 40px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  
+  .title {
+    font-size: 32px;
   }
 
   .grid {
     grid-template-columns: 1fr;
+    max-width: 400px;
+    margin: 0 auto;
   }
 
-  .title {
-    font-size: 28px;
-  }
-
-  .side,
   .highlight {
     transform: none;
-    opacity: 1;
+  }
+
+  .desc {
+    height: auto;
   }
 }
