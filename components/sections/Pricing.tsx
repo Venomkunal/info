@@ -6,7 +6,17 @@ import styles from "../../styles/sections/Pricing.module.css";
 // 📞 WhatsApp configuration
 const PHONE_NUMBER = "917099093224"; // Replace with your actual WhatsApp number
 
-const plans = [
+// 1️⃣ Add this TypeScript Interface
+interface Plan {
+  name: string;
+  price: string;
+  desc: string;
+  highlight?: boolean; // The '?' makes this property optional
+  features: string[];
+}
+
+// 2️⃣ Apply the type to the array
+const plans: Plan[] = [
   {
     name: "Starter",
     price: "₹10K",
@@ -56,11 +66,12 @@ const plans = [
 ];
 
 export default function Pricing() {
-  // 🚀 WhatsApp Redirection Logic
-  const handleWhatsAppRedirect = (plan) => {
+  // 3️⃣ Add the Plan type to the parameter here
+  const handleWhatsAppRedirect = (plan: Plan) => {
     const greeting = "Hello! 👋";
     const body = `I am interested in your *${plan.name}* plan priced at *${plan.price}*.`;
-    const featuresList = plan.features.map((f) => `✅ ${f}`).join("%0A");
+    // Explicitly define 'f' as a string in the map function
+    const featuresList = plan.features.map((f: string) => `✅ ${f}`).join("%0A");
     
     const message = `${greeting}%0A%0A${body}%0A%0A*Features I'm looking at:*%0A${featuresList}%0A%0ACan we discuss this further?`;
     
