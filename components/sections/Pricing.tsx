@@ -71,9 +71,8 @@ export default function Pricing() {
     const greeting = "Hello! 👋";
     const body = `I am interested in your *${plan.name}* plan priced at *${plan.price}*.`;
     // Explicitly define 'f' as a string in the map function
-    const featuresList = plan.features.map((f: string) => `✅ ${f}`).join("%0A");
     
-    const message = `${greeting}%0A%0A${body}%0A%0A*Features I'm looking at:*%0A${featuresList}%0A%0ACan we discuss this further?`;
+    const message = `${greeting}%0A%0A${body}%0A%0ACan we discuss this further?`;
     
     const whatsappURL = `https://wa.me/${PHONE_NUMBER}?text=${message}`;
     window.open(whatsappURL, "_blank");
