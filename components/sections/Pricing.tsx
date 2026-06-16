@@ -3,47 +3,76 @@
 import { motion } from "framer-motion";
 import styles from "../../styles/sections/Pricing.module.css";
 
+// 📞 WhatsApp configuration
+const PHONE_NUMBER = "917099093224"; // Replace with your actual WhatsApp number
+
 const plans = [
   {
     name: "Starter",
     price: "₹10K",
-    desc: "For basic online presence",
-    features: ["1-3 Pages", "Mobile Ready", "Basic SEO"],
-  },
-  {
-    name: "Growth",
-    price: "₹25K",
-    desc: "Best for real business growth",
-    highlight: true,
+    desc: "Perfect for establishing a basic online footprint.",
     features: [
-      "Full Website",
-      "Advanced SEO",
-      "Automation System",
-      "Lead Generation",
+      "1-3 Pages Custom Design",
+      "Mobile Responsive",
+      "Basic On-page SEO",
+      "Contact Form Integration",
     ],
   },
   {
-    name: "Pro",
-    price: "₹50K+",
-    desc: "Complete business system",
+    name: "Professional",
+    price: "₹18K",
+    desc: "For businesses needing a complete digital storefront.",
     features: [
-      "Custom System",
-      "Full Automation",
-      "CRM Integration",
-      "Scaling Support",
+      "Up to 5 Pages",
+      "CMS / Blog Setup",
+      "Speed Optimization",
+      "Google Analytics & Maps",
+    ],
+  },
+  {
+    name: "Growth",
+    price: "₹30K",
+    desc: "Best for driving traffic and converting leads.",
+    highlight: true,
+    features: [
+      "Up to 10 Pages",
+      "Advanced SEO & Schema",
+      "Lead Generation Funnel",
+      "Email CRM Integration",
+      "Priority Support",
+    ],
+  },
+  {
+    name: "Enterprise",
+    price: "₹50K+",
+    desc: "Custom-built systems for scaling operations.",
+    features: [
+      "Custom Web App / Portal",
+      "E-commerce & Payments",
+      "Full Workflow Automation",
+      "Dedicated Account Manager",
     ],
   },
 ];
 
 export default function Pricing() {
+  // 🚀 WhatsApp Redirection Logic
+  const handleWhatsAppRedirect = (plan) => {
+    const greeting = "Hello! 👋";
+    const body = `I am interested in your *${plan.name}* plan priced at *${plan.price}*.`;
+    const featuresList = plan.features.map((f) => `✅ ${f}`).join("%0A");
+    
+    const message = `${greeting}%0A%0A${body}%0A%0A*Features I'm looking at:*%0A${featuresList}%0A%0ACan we discuss this further?`;
+    
+    const whatsappURL = `https://wa.me/${PHONE_NUMBER}?text=${message}`;
+    window.open(whatsappURL, "_blank");
+  };
+
   return (
     <section className={styles.section}>
-      
       {/* 🔥 SCROLL WRAPPER */}
       <div className={styles.scrollInner}>
-        
         <div className={styles.container}>
-
           <motion.h1
             className={styles.title}
             initial={{ opacity: 0, y: 40 }}
@@ -61,11 +90,11 @@ export default function Pricing() {
                 }`}
                 initial={{ opacity: 0, y: 60 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.2 }}
-                whileHover={{ scale: 1.05 }}
+                transition={{ delay: i * 0.15 }}
+                whileHover={{ y: -10, transition: { duration: 0.2 } }}
               >
                 {plan.highlight && (
-                  <div className={styles.badge}>Most Chosen</div>
+                  <div className={styles.badge}>Most Popular</div>
                 )}
 
                 <h3>{plan.name}</h3>
@@ -82,13 +111,18 @@ export default function Pricing() {
 
                 <ul>
                   {plan.features.map((f, idx) => (
-                    <li key={idx}>✔ {f}</li>
+                    <li key={idx}>
+                      <span className={styles.checkmark}>✔</span> {f}
+                    </li>
                   ))}
                 </ul>
 
-                <a href="#" className={styles.btn}>
-                  Choose Plan
-                </a>
+                <button 
+                  onClick={() => handleWhatsAppRedirect(plan)} 
+                  className={styles.btn}
+                >
+                  Choose {plan.name}
+                </button>
               </motion.div>
             ))}
           </div>
@@ -97,10 +131,10 @@ export default function Pricing() {
             className={styles.roi}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
           >
-            One good client can recover your entire investment.
+            One good client can recover your entire investment. 🤝
           </motion.p>
-
         </div>
       </div>
     </section>
