@@ -332,7 +332,7 @@
   .mobileiframe {
     width: 393px;
     height: 840px;
-    transform: scale(0.55);
+    transform: scale(0.52);
     transform-origin: top left;
   }
 }
