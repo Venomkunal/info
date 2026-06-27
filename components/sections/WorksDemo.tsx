@@ -12,46 +12,65 @@ const demos = [
 
 export default function WorksDemo() {
   const [active, setActive] = useState(0);
-  const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
+  const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  
+  // NEW: State to track orientation
+  const [isLandscape, setIsLandscape] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  // Dynamic Iframe states
   const [scale, setScale] = useState(1);
   const [iframeSize, setIframeSize] = useState({ width: 1440, height: 900 });
 
-  // Separate refs to ensure clean measurements when switching tabs
   const desktopScreenRef = useRef<HTMLDivElement>(null);
+  const tabletScreenRef = useRef<HTMLDivElement>(null);
   const mobileScreenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Choose the active ref and the standard viewport width we want to test
-    const activeRef = device === "desktop" ? desktopScreenRef.current : mobileScreenRef.current;
-    const targetViewportWidth = device === "desktop" ? 1440 : 393;
+    const activeRef =
+      device === "desktop"
+        ? desktopScreenRef.current
+        : device === "tablet"
+        ? tabletScreenRef.current
+        : mobileScreenRef.current;
+
+    // NEW: Calculate standard widths based on device AND orientation
+    let targetViewportWidth = 1440;
+    if (device === "tablet") {
+      targetViewportWidth = isLandscape ? 1024 : 768;
+    } else if (device === "mobile") {
+      targetViewportWidth = isLandscape ? 852 : 393;
+    }
 
     if (!activeRef) return;
 
     const calculateScale = () => {
       const { width, height } = activeRef.getBoundingClientRect();
-      
-      // Calculate scale to make the standard viewport fit the visual mockup width
       const calculatedScale = width / targetViewportWidth;
       
       setScale(calculatedScale);
       setIframeSize({
-        width: targetViewportWidth + 20,
-        // Calculate height inversely so it perfectly fills the mockup without letterboxing
+        width: targetViewportWidth + 20, 
         height: height / calculatedScale,
       });
     };
 
     calculateScale();
 
-    // Use ResizeObserver to automatically adjust if the window or container resizes
     const observer = new ResizeObserver(() => calculateScale());
     observer.observe(activeRef);
 
-    return () => observer.disconnect();
-  }, [device]);
+    const preventWrapperScroll = () => {
+      if (activeRef.scrollTop !== 0) activeRef.scrollTop = 0;
+      if (activeRef.scrollLeft !== 0) activeRef.scrollLeft = 0;
+    };
+    
+    activeRef.addEventListener("scroll", preventWrapperScroll);
+
+    return () => {
+      observer.disconnect();
+      activeRef.removeEventListener("scroll", preventWrapperScroll);
+    };
+  }, [device, isLandscape]); // Added isLandscape to dependencies
 
   return (
     <section className={styles.section}>
@@ -65,20 +84,45 @@ export default function WorksDemo() {
             className={device === "desktop" ? styles.active : ""}
             onClick={() => {
               setDevice("desktop");
+              setIsLandscape(false); // Reset on switch
               setLoaded(false);
             }}
           >
             💻 Desktop
           </button>
           <button
+            className={device === "tablet" ? styles.active : ""}
+            onClick={() => {
+              setDevice("tablet");
+              setIsLandscape(false); // Reset on switch
+              setLoaded(false);
+            }}
+          >
+            📟 Tablet
+          </button>
+          <button
             className={device === "mobile" ? styles.active : ""}
             onClick={() => {
               setDevice("mobile");
+              setIsLandscape(false); // Reset on switch
               setLoaded(false);
             }}
           >
             📱 Mobile
           </button>
+
+          {/* NEW: Rotate Button (Hidden on Desktop) */}
+          {device !== "desktop" && (
+            <button
+              className={styles.rotateBtn}
+              onClick={() => {
+                setIsLandscape(!isLandscape);
+                setLoaded(false);
+              }}
+            >
+              🔄 {isLandscape ? "Landscape" : "Portrait"}
+            </button>
+          )}
         </div>
 
         <div className={styles.tabs}>
@@ -98,6 +142,7 @@ export default function WorksDemo() {
       </div>
 
       <div className={styles.previewArea}>
+        {/* DESKTOP */}
         {device === "desktop" && (
           <div className={styles.macWrapper}>
             <img src="/macbook.png" alt="MacBook" className={styles.macImage} />
@@ -112,7 +157,6 @@ export default function WorksDemo() {
                   <div className={styles.address}>{demos[active].url}</div>
                 </div>
 
-                {/* Desktop Screen Ref attached here */}
                 <div ref={desktopScreenRef} className={styles.browserBody}>
                   {!loaded && <div className={styles.loader}>Loading...</div>}
                   <iframe
@@ -120,11 +164,14 @@ export default function WorksDemo() {
                     src={demos[active].url}
                     onLoad={() => setLoaded(true)}
                     style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
                       width: `${iframeSize.width}px`,
                       height: `${iframeSize.height}px`,
                       transform: `scale(${scale})`,
                       transformOrigin: "top left",
-                      border: "none"
+                      border: "none",
                     }}
                   />
                 </div>
@@ -133,14 +180,47 @@ export default function WorksDemo() {
           </div>
         )}
 
+        {/* TABLET */}
+        {device === "tablet" && (
+          <div className={isLandscape ? styles.tabletLandscape : styles.tabletWrapper}>
+            {!isLandscape && <img src="/ipad.png" alt="Tablet" className={styles.tabletImage} />}
+            
+            <div className={isLandscape ? styles.landscapeScreen : styles.tabletScreen}>
+              <div className={styles.tabletBrowser}>
+                <div className={styles.tabletTop}>🔒 {demos[active].url}</div>
+                
+                <div ref={tabletScreenRef} className={styles.tabletBody}>
+                  {!loaded && <div className={styles.loader}>Loading...</div>}
+                  <iframe
+                    key={demos[active].url}
+                    src={demos[active].url}
+                    onLoad={() => setLoaded(true)}
+                    style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
+                      width: `${iframeSize.width}px`,
+                      height: `${iframeSize.height}px`,
+                      transform: `scale(${scale})`,
+                      transformOrigin: "top left",
+                      border: "none",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* MOBILE */}
         {device === "mobile" && (
-          <div className={styles.phoneWrapper}>
-            <img src="/iphone.png" alt="iPhone" className={styles.phoneImage} />
-            <div className={styles.phoneScreen}>
+          <div className={isLandscape ? styles.phoneLandscape : styles.phoneWrapper}>
+            {!isLandscape && <img src="/iphone.png" alt="iPhone" className={styles.phoneImage} />}
+            
+            <div className={isLandscape ? styles.landscapeScreen : styles.phoneScreen}>
               <div className={styles.mobileBrowser}>
                 <div className={styles.mobileTop}>🔒 {demos[active].url}</div>
                 
-                {/* Mobile Screen Ref attached here */}
                 <div ref={mobileScreenRef} className={styles.mobileBody}>
                   {!loaded && <div className={styles.loader}>Loading...</div>}
                   <iframe
@@ -148,11 +228,14 @@ export default function WorksDemo() {
                     src={demos[active].url}
                     onLoad={() => setLoaded(true)}
                     style={{
+                      position: "absolute",
+                      top: 0,
+                      left: 0,
                       width: `${iframeSize.width}px`,
                       height: `${iframeSize.height}px`,
                       transform: `scale(${scale})`,
                       transformOrigin: "top left",
-                      border: "none"
+                      border: "none",
                     }}
                   />
                 </div>
@@ -163,12 +246,7 @@ export default function WorksDemo() {
       </div>
 
       <div className={styles.actionWrap}>
-        <a
-          href={demos[active].url}
-          target="_blank"
-          rel="noreferrer"
-          className={styles.btn}
-        >
+        <a href={demos[active].url} target="_blank" rel="noreferrer" className={styles.btn}>
           Open Full Site ↗
         </a>
       </div>

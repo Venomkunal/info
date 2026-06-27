@@ -176,13 +176,13 @@
   height: 100%;
 }
 .mobileTop {
-  height: 36px;
+  height: 25px;
   display: flex;
   align-items: center;
   padding: 0 10px;
   background: rgba(30, 41, 59, 0.95);
   color: #94a3b8;
-  font-size: 11px;
+  font-size: 9px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -196,6 +196,112 @@
   background: #fff;
 }
 
+/* ==========================
+   TABLET
+   ========================== */
+.tabletWrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: min(700px, 90vw);
+  filter: drop-shadow(0 30px 50px rgba(0, 0, 0, 0.65));
+}
+.tabletImage {
+  width: 100%;
+  display: block;
+}
+
+/* Tweak these percentages to perfectly fit the screen inside your tablet.png */
+.tabletScreen {
+  position: absolute;
+  top: 12%;
+  left: 23%;
+  width: 52.3%;
+  height: 75%;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+.tabletBrowser {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+.tabletTop {
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  background: rgba(30, 41, 59, 0.95);
+  color: #94a3b8;
+  font-size: 11px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.tabletBody {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* ==========================
+   ROTATE BUTTON & LANDSCAPE FRAMES
+   ========================== */
+.rotateBtn {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid #38bdf8 !important;
+  background: rgba(56, 189, 248, 0.1) !important;
+  color: #38bdf8 !important;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 10px;
+}
+.rotateBtn:hover {
+  background: rgba(56, 189, 248, 0.2) !important;
+}
+
+/* CSS-Only Phone Frame for Landscape */
+.phoneLandscape {
+  position: relative;
+  width: min(750px, 95vw);
+  aspect-ratio: 852 / 393;
+  border: 14px solid #1e293b;
+  border-radius: 36px;
+  background: #000;
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* CSS-Only Tablet Frame for Landscape */
+.tabletLandscape {
+  position: relative;
+  width: min(900px, 95vw);
+  aspect-ratio: 1024 / 768;
+  border: 18px solid #1e293b;
+  border-radius: 24px;
+  background: #000;
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.65);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Overrides the absolute positioning when in landscape mode */
+.landscapeScreen {
+  width: 100%;
+  height: 100%;
+  position: relative !important;
+  top: 0 !important;
+  left: 0 !important;
+  border-radius: 0 !important; 
+}
 /* ==========================
    LOADER
    ========================== */
