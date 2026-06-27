@@ -4,77 +4,54 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../../styles/sections/WorksDemo.module.css";
 
 const demos = [
-  {
-    name: "Business Website",
-    url: "https://rodalitraders.shinewebtechcretions.online/",
-  },
-  {
-    name: "E-commerce Store",
-    url: "https://sample2-0.vercel.app/",
-  },
-  {
-    name: "Travel Agent",
-    url: "https://awesome-arunachal.vercel.app/",
-  },
-  {
-    name: "Bakery Store",
-    url: "https://bakery.shinewebtechcretions.online/",
-  },
+  { name: "Business Website", url: "https://rodalitraders.shinewebtechcretions.online/" },
+  { name: "E-commerce Store", url: "https://sample2-0.vercel.app/" },
+  { name: "Travel Agent", url: "https://awesome-arunachal.vercel.app/" },
+  { name: "Bakery Store", url: "https://bakery.shinewebtechcretions.online/" },
 ];
 
 export default function WorksDemo() {
   const [active, setActive] = useState(0);
   const [device, setDevice] = useState<"desktop" | "mobile">("desktop");
   const [loaded, setLoaded] = useState(false);
-  const [scale, setScale] = useState(1);
-  const [iframeSize, setIframeSize] = useState({
-  width: 2800,
-  height: 980,
-});
 
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const screenRef = useRef<HTMLDivElement>(null);
+  // Dynamic Iframe states
+  const [scale, setScale] = useState(1);
+  const [iframeSize, setIframeSize] = useState({ width: 1440, height: 900 });
+
+  // Separate refs to ensure clean measurements when switching tabs
+  const desktopScreenRef = useRef<HTMLDivElement>(null);
+  const mobileScreenRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-  const updateScale = () => {
-    if (!screenRef.current) return;
+    // Choose the active ref and the standard viewport width we want to test
+    const activeRef = device === "desktop" ? desktopScreenRef.current : mobileScreenRef.current;
+    const targetViewportWidth = device === "desktop" ? 1440 : 393;
 
-    const screenWidth = screenRef.current.offsetWidth;
-    const screenHeight = screenRef.current.offsetHeight;
+    if (!activeRef) return;
 
-    let iframeWidth = 1765;
-    let iframeHeight = 889;
+    const calculateScale = () => {
+      const { width, height } = activeRef.getBoundingClientRect();
+      
+      // Calculate scale to make the standard viewport fit the visual mockup width
+      const calculatedScale = width / targetViewportWidth;
+      
+      setScale(calculatedScale);
+      setIframeSize({
+        width: targetViewportWidth + 20,
+        // Calculate height inversely so it perfectly fills the mockup without letterboxing
+        height: height / calculatedScale,
+      });
+    };
 
-    if (window.innerWidth <= 480) {
-      iframeWidth = 2045;
-      iframeHeight = 869;
-    } else if (window.innerWidth <= 768) {
-      iframeWidth = 1910;
-      iframeHeight = 1024;
-    } else if (window.innerWidth <= 1024) {
-      iframeWidth = 1980;
-      iframeHeight = 989;
-    }
+    calculateScale();
 
-    setIframeSize({
-      width: iframeWidth,
-      height: iframeHeight,
-    });
+    // Use ResizeObserver to automatically adjust if the window or container resizes
+    const observer = new ResizeObserver(() => calculateScale());
+    observer.observe(activeRef);
 
-    const scaleX = screenWidth / iframeWidth;
-    const scaleY = screenHeight / iframeHeight;
-
-    setScale(Math.min(scaleX, scaleY));
-  };
-
-  updateScale();
-
-  window.addEventListener("resize", updateScale);
-
-  return () => {
-    window.removeEventListener("resize", updateScale);
-  };
-}, []);
+    return () => observer.disconnect();
+  }, [device]);
 
   return (
     <section className={styles.section}>
@@ -93,7 +70,6 @@ export default function WorksDemo() {
           >
             💻 Desktop
           </button>
-
           <button
             className={device === "mobile" ? styles.active : ""}
             onClick={() => {
@@ -124,12 +100,7 @@ export default function WorksDemo() {
       <div className={styles.previewArea}>
         {device === "desktop" && (
           <div className={styles.macWrapper}>
-            <img
-              src="/macbook.png"
-              alt="MacBook"
-              className={styles.macImage}
-            />
-
+            <img src="/macbook.png" alt="MacBook" className={styles.macImage} />
             <div className={styles.macScreen}>
               <div className={styles.browser}>
                 <div className={styles.browserTop}>
@@ -138,34 +109,24 @@ export default function WorksDemo() {
                     <span className={styles.yellow}></span>
                     <span className={styles.green}></span>
                   </div>
-
-                  <div className={styles.address}>
-                    {demos[active].url}
-                  </div>
+                  <div className={styles.address}>{demos[active].url}</div>
                 </div>
 
-                <div
-                  ref={screenRef}
-                  className={styles.browserBody}
-                >
-                  {!loaded && (
-                    <div className={styles.loader}>
-                      Loading...
-                    </div>
-                  )}
-
+                {/* Desktop Screen Ref attached here */}
+                <div ref={desktopScreenRef} className={styles.browserBody}>
+                  {!loaded && <div className={styles.loader}>Loading...</div>}
                   <iframe
-  ref={iframeRef}
-  key={demos[active].url}
-  src={demos[active].url}
-  onLoad={() => setLoaded(true)}
-  style={{
-    width: `${iframeSize.width}px`,
-    height: `${iframeSize.height}px`,
-    transform: `scale(${scale})`,
-    transformOrigin: "top left",
-  }}
-/>
+                    key={demos[active].url}
+                    src={demos[active].url}
+                    onLoad={() => setLoaded(true)}
+                    style={{
+                      width: `${iframeSize.width}px`,
+                      height: `${iframeSize.height}px`,
+                      transform: `scale(${scale})`,
+                      transformOrigin: "top left",
+                      border: "none"
+                    }}
+                  />
                 </div>
               </div>
             </div>
@@ -174,30 +135,25 @@ export default function WorksDemo() {
 
         {device === "mobile" && (
           <div className={styles.phoneWrapper}>
-            <img
-              src="/iphone.png"
-              alt="iPhone"
-              className={styles.phoneImage}
-            />
-
+            <img src="/iphone.png" alt="iPhone" className={styles.phoneImage} />
             <div className={styles.phoneScreen}>
               <div className={styles.mobileBrowser}>
-                <div className={styles.mobileTop}>
-                  🔒 {demos[active].url}
-                </div>
-
-                <div className={styles.mobileBody}>
-                  {!loaded && (
-                    <div className={styles.loader}>
-                      Loading...
-                    </div>
-                  )}
-
+                <div className={styles.mobileTop}>🔒 {demos[active].url}</div>
+                
+                {/* Mobile Screen Ref attached here */}
+                <div ref={mobileScreenRef} className={styles.mobileBody}>
+                  {!loaded && <div className={styles.loader}>Loading...</div>}
                   <iframe
                     key={demos[active].url}
                     src={demos[active].url}
-                    className={styles.mobileiframe}
                     onLoad={() => setLoaded(true)}
+                    style={{
+                      width: `${iframeSize.width}px`,
+                      height: `${iframeSize.height}px`,
+                      transform: `scale(${scale})`,
+                      transformOrigin: "top left",
+                      border: "none"
+                    }}
                   />
                 </div>
               </div>
