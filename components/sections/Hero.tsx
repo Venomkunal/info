@@ -3,8 +3,14 @@
 import { motion, useMotionValue } from "framer-motion";
 import { useEffect, useRef } from "react";
 import styles from "../../styles/sections/Hero.module.css";
+import Link from "next/dist/client/link";
+import Image from "next/image";
 
-export default function Hero() {
+type HeroProps = {
+  goToSlide: (slide: number) => void;
+};
+
+export default function Hero({ goToSlide }: HeroProps) {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -27,10 +33,8 @@ export default function Hero() {
 
   return (
     <section className={styles.hero}>
-      
       {/* 🔥 SCROLL WRAPPER (KEY FIX) */}
       <div className={styles.scrollInner}>
-        
         {/* ===== BACKGROUND ===== */}
         <div className={styles.bg}>
           <div className={styles.gradient1}></div>
@@ -46,7 +50,6 @@ export default function Hero() {
 
         {/* ===== CONTENT ===== */}
         <div className={styles.container}>
-          
           {/* LEFT */}
           <motion.div
             className={styles.content}
@@ -54,7 +57,13 @@ export default function Hero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <img src="/logo.jpg" className={styles.logo} />
+            <Image
+              src="/logo.jpg"
+              alt="logoimage"
+              className={styles.logo}
+              width={60}
+              height={60}
+            ></Image>
 
             <h1 className={styles.title}>
               We Build Systems That
@@ -62,14 +71,15 @@ export default function Hero() {
             </h1>
 
             <p className={styles.subtitle}>
-              Websites, SEO engines, and automation pipelines designed to grow your business on autopilot.
+              Websites, SEO engines, and automation pipelines designed to grow
+              your business on autopilot.
             </p>
 
             <div className={styles.cta}>
-              <a href="#" className={styles.primary}>
+              <Link href="#" className={styles.primary}>
                 Start Project
-              </a>
-              <a href="#" className={styles.secondary}>
+              </Link>
+              <a className={styles.secondary} onClick={() => goToSlide(5)}>
                 View Work
               </a>
             </div>
@@ -99,7 +109,6 @@ export default function Hero() {
             <div className={styles.floating1}>+300% Traffic</div>
             <div className={styles.floating2}>24/7 Automation</div>
           </motion.div>
-
         </div>
       </div>
     </section>
