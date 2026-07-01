@@ -1,0 +1,58 @@
+/* PrivacyPolicy.module.css */
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+.title {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #111;
+  font-weight: 700;
+}
+
+.lastUpdated {
+  color: #666;
+  font-style: italic;
+  margin-bottom: 2.5rem;
+  font-size: 0.9rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+  color: #222;
+  border-bottom: 1px solid #eaeaea;
+  padding-bottom: 0.5rem;
+}
+
+.text {
+  margin-bottom: 1rem;
+}
+
+.list {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.listItem {
+  margin-bottom: 0.5rem;
+}
+
+.contactEmail {
+  font-weight: 600;
+  color: #0070f3;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.contactEmail:hover {
+  color: #0051a8;
+  text-decoration: underline;
+}

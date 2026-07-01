@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "../styles/page.module.css";
-
 import Hero from "@/components/sections/Hero";
 import Results from "@/components/sections/Results";
 import Features from "@/components/sections/Features";
