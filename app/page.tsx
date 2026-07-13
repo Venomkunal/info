@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import styles from "../styles/page.module.css";
-
 import Hero from "@/components/sections/Hero";
 import Results from "@/components/sections/Results";
 import Features from "@/components/sections/Features";
@@ -15,19 +14,24 @@ import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
 
 export default function Home() {
+  const [index, setIndex] = useState(0);
+
+  const goToSlide = (slide: number) => {
+    setIndex(slide);
+  };
+
   const slides = [
-    <Hero key="hero" />,
+    <Hero key="hero" goToSlide={goToSlide} />,
     <BeforeAfterSlide key="before-after" />,
     <Results key="results" />,
     <CaseStudy key="case" />,
     <Features key="features" />,
-    <WorksDemo key="works" />,       // long → scroll inside
-    <Pricing key="pricing" />,        // long → scroll inside
-    <Testimonials key="testimonials" />, // long → scroll inside
+    <WorksDemo key="works" />,
+    <Pricing key="pricing" />,
+    <Testimonials key="testimonials" />,
     <Contact key="contact" />,
   ];
 
-  const [index, setIndex] = useState(0);
   const total = slides.length;
 
   const next = () => setIndex((i) => Math.min(i + 1, total - 1));
@@ -39,11 +43,12 @@ export default function Home() {
       if (e.key === "ArrowRight") next();
       if (e.key === "ArrowLeft") prev();
     };
+
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  // Swipe (fixed)
+  // Swipe
   const startX = useRef(0);
   const startY = useRef(0);
 
@@ -56,14 +61,13 @@ export default function Home() {
     const deltaX = e.changedTouches[0].clientX - startX.current;
     const deltaY = e.changedTouches[0].clientY - startY.current;
 
-    // Only horizontal swipe triggers slide
     if (Math.abs(deltaX) > Math.abs(deltaY)) {
       if (deltaX > 80) prev();
       if (deltaX < -80) next();
     }
   };
 
-  // Optional: Mouse wheel navigation (desktop)
+  // Mouse wheel
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       if (e.deltaY > 60) next();
@@ -88,11 +92,15 @@ export default function Home() {
         {slides}
       </motion.div>
 
-      {/* NAV */}
       <div className={styles.nav}>
-        <button onClick={prev} disabled={index === 0} className={styles.navBtn}>
+        <button
+          onClick={prev}
+          disabled={index === 0}
+          className={styles.navBtn}
+        >
           ‹
         </button>
+
         <button
           onClick={next}
           disabled={index === total - 1}
@@ -102,12 +110,13 @@ export default function Home() {
         </button>
       </div>
 
-      {/* DOTS */}
       <div className={styles.dots}>
         {slides.map((_, i) => (
           <div
             key={i}
-            className={`${styles.dot} ${i === index ? styles.active : ""}`}
+            className={`${styles.dot} ${
+              i === index ? styles.active : ""
+            }`}
           />
         ))}
       </div>
