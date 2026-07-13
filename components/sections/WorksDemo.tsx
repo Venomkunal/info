@@ -8,6 +8,7 @@ const demos = [
   { name: "E-commerce Store", url: "https://sample2-0.vercel.app/" },
   { name: "Travel Agent", url: "https://awesome-arunachal.vercel.app/" },
   { name: "Bakery Store", url: "https://bakery.shinewebtechcretions.online/" },
+  { name: "Marketing Website", url: "https://adam.shinewebtechcretions.online/" }
 ];
 
 export default function WorksDemo() {
