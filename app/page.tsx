@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Suspense } from "react";
 import { motion } from "framer-motion";
+import { useSearchParams, useRouter } from "next/navigation";
 import styles from "../styles/page.module.css";
+
 import Hero from "@/components/sections/Hero";
 import Results from "@/components/sections/Results";
 import Features from "@/components/sections/Features";
@@ -13,8 +15,20 @@ import Pricing from "@/components/sections/Pricing";
 import Testimonials from "@/components/sections/Testimonials";
 import Contact from "@/components/sections/Contact";
 
-export default function Home() {
-  const [index, setIndex] = useState(0);
+// 1. Move your slider logic into an inner component
+function SliderContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  // Read the URL on first load. If ?slide=5 exists, start there.
+  const initialSlide = Number(searchParams.get("slide")) || 0;
+  const [index, setIndex] = useState(initialSlide);
+
+  // Sync the URL whenever the slide index changes. 
+  // Using replace() prevents filling up the browser back-button history.
+  useEffect(() => {
+    router.replace(`?slide=${index}`, { scroll: false });
+  }, [index, router]);
 
   const goToSlide = (slide: number) => {
     setIndex(slide);
@@ -114,12 +128,20 @@ export default function Home() {
         {slides.map((_, i) => (
           <div
             key={i}
-            className={`${styles.dot} ${
-              i === index ? styles.active : ""
-            }`}
+            className={`${styles.dot} ${i === index ? styles.active : ""}`}
+            onClick={() => goToSlide(i)} // Optional: allows users to click dots to navigate
           />
         ))}
       </div>
     </div>
+  );
+}
+
+// 2. Wrap the inner component in Suspense to prevent Next.js build errors
+export default function Home() {
+  return (
+    <Suspense fallback={<div className={styles.container} />}>
+      <SliderContent />
+    </Suspense>
   );
 }
